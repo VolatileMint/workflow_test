@@ -1,13 +1,28 @@
+# github リポジトリのActionタブに表示されるワークフロー名(省略可)
 name: learn-github-actions
+# 実行された際のユーザー名を表示(省略可)
 run-name: ${{ github.actor }} is learning Github Actions
+# ワークフローのトリガーを指定
 on: [push]
+# ワークフローで実行されるすべてのジョブをグループ化
 jobs:
+  # "check-bats-version" という名前のジョブを定義
   check-bats-version:
+    # 実行環境の指定(Ubuntu Linux ランナーの最新ver)
     runs-on: ubuntu-latest
+    # ジョブで実行されるステップをグループ化する
+    # このセクションで入れ子になっている項目は個別のアクションまたはシェルスクリプトになる
     steps:
+    # このステップがactions/checkoutアクションのv3を実行することを指定
      - uses: actions/checkout@v3
+    # actions/setup-nodeアクションを使用して指定されたバージョンのNode.jsをインストールする
+    # nodeとnpmの両方のコマンドがpushにプッシュされる
      - uses: actions/setup-node@v3
       with:
+        # node.jsのv11を指定
         node-version: '14'
+    # runキーワードはランナーでコマンドを実行するようにジョブを指示
+    # この場合はnpmを使用してbatsソフトウェアテストパッケージをインストールする
     - run: npm install -g bats
+    # ソフトウェアのバージョンを出力するパラメータを指定してbatsを実行
     - run: bats -v
